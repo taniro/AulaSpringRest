@@ -30,7 +30,7 @@ public class AulaSpringRestApplication implements CommandLineRunner {
         Pessoa pessoa = new Pessoa();
         pessoa.setNome("João");
 
-        pessoa.setEndereco(endereco);
+        //pessoa.setEndereco(endereco);
 
         endereco.setPessoa(pessoa);
         enderecoRepository.save(endereco);
