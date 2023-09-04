@@ -2,10 +2,12 @@ package ufrn.br.aulaspringrest;
 
 import ch.qos.logback.core.net.server.Client;
 import jakarta.transaction.Transactional;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import ufrn.br.aulaspringrest.model.Endereco;
 import ufrn.br.aulaspringrest.model.Pedido;
 import ufrn.br.aulaspringrest.model.Pessoa;
@@ -20,6 +22,12 @@ import java.util.Set;
 
 @SpringBootApplication
 public class AulaSpringRestApplication implements CommandLineRunner {
+
+
+    @Bean
+    public ModelMapper mapper(){
+        return new ModelMapper();
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(AulaSpringRestApplication.class, args);

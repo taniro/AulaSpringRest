@@ -1,6 +1,7 @@
 package ufrn.br.aulaspringrest.controller;
 
 
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -20,14 +21,16 @@ import java.net.URI;
 public class PessoaController {
 
     PessoaService service;
+    PessoaMapper mapper;
 
-    public PessoaController(PessoaService service) {
+    public PessoaController(PessoaService service, PessoaMapper mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
     @PostMapping
     public ResponseEntity<PessoaResponseDTO> create(@RequestBody PessoaRequestDTO dto){
-        Pessoa pessoa = PessoaMapper.toPessoa(dto);
+        Pessoa pessoa = mapper.toPessoa(dto);
         Pessoa created = service.create(pessoa);
 
         URI location = ServletUriComponentsBuilder
@@ -36,7 +39,7 @@ public class PessoaController {
                 .buildAndExpand(created.getId())
                 .toUri();
 
-        PessoaResponseDTO responseDTO = PessoaMapper.toPessoaResponseDTO(created);
+        PessoaResponseDTO responseDTO = mapper.toPessoaResponseDTO(created);
         return ResponseEntity.created(location).body(responseDTO);
     }
 

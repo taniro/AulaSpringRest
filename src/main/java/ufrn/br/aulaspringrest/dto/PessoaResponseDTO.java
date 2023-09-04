@@ -3,9 +3,9 @@ package ufrn.br.aulaspringrest.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 public class PessoaResponseDTO {
 
     String id;
@@ -13,4 +13,7 @@ public class PessoaResponseDTO {
     String sobrenome;
     Integer idade;
     String nomeDaRua;
+
+    public PessoaResponseDTO() {
+    }
 }
