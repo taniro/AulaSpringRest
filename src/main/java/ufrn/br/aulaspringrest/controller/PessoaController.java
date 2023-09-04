@@ -3,6 +3,8 @@ package ufrn.br.aulaspringrest.controller;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -63,9 +65,18 @@ public class PessoaController {
         return ResponseEntity.created(location).build();
     }*/
 
+    /*
     @GetMapping
     public List<Pessoa> listAll(){
         return service.listAll();
+    }
+
+     */
+
+
+    @GetMapping
+    public Page<Pessoa> listAll(Pageable page){
+        return service.listAll(page);
     }
 
     @GetMapping("{id}")

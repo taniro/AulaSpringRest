@@ -3,6 +3,8 @@ package ufrn.br.aulaspringrest.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -23,6 +25,10 @@ public class PessoaService {
 
     public List<Pessoa> listAll(){
         return repository.findAll();
+    }
+
+    public Page<Pessoa> listAll(Pageable page){
+        return repository.findAll(page);
     }
 
     public Pessoa create(Pessoa p){
