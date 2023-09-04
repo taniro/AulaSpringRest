@@ -1,22 +1,19 @@
 package ufrn.br.aulaspringrest.controller;
 
 
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ufrn.br.aulaspringrest.dto.PessoaMapper;
+import ufrn.br.aulaspringrest.dto.PessoaRequestDTO;
+import ufrn.br.aulaspringrest.dto.PessoaResponseDTO;
 import ufrn.br.aulaspringrest.model.Pessoa;
 import ufrn.br.aulaspringrest.service.PessoaService;
 
-import javax.xml.crypto.dsig.XMLObject;
 import java.net.URI;
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/pessoas/")
@@ -29,8 +26,9 @@ public class PessoaController {
     }
 
     @PostMapping
-    public ResponseEntity<Pessoa> create(@RequestBody Pessoa p){
-        Pessoa created = service.create(p);
+    public ResponseEntity<PessoaResponseDTO> create(@RequestBody PessoaRequestDTO dto){
+        Pessoa pessoa = PessoaMapper.toPessoa(dto);
+        Pessoa created = service.create(pessoa);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -38,8 +36,12 @@ public class PessoaController {
                 .buildAndExpand(created.getId())
                 .toUri();
 
-        return ResponseEntity.created(location).body(created);
+        PessoaResponseDTO responseDTO = PessoaMapper.toPessoaResponseDTO(created);
+        return ResponseEntity.created(location).body(responseDTO);
     }
+
+
+
 
     @PutMapping
     public Pessoa saveOrUpdate(@RequestBody Pessoa p){
@@ -78,6 +80,13 @@ public class PessoaController {
     public Page<Pessoa> listAll(Pageable page){
         return service.listAll(page);
     }
+
+
+    /*
+    @GetMapping
+    public List<Pessoa> listAll(){
+        return service.listAll();
+    }*/
 
     @GetMapping("{id}")
     public Pessoa getById(@PathVariable String id){

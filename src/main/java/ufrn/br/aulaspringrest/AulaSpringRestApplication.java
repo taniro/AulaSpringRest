@@ -41,6 +41,7 @@ public class AulaSpringRestApplication implements CommandLineRunner {
     @Transactional
     public void run(String... args) throws Exception {
 
+        /*
         Produto prod1 = new Produto();
         Produto prod2 = new Produto();
 
@@ -88,5 +89,7 @@ public class AulaSpringRestApplication implements CommandLineRunner {
         pessoaRepository.save(pessoa);
 
         pessoaRepository.findById(pessoa.getId());
+
+         */
     }
 }

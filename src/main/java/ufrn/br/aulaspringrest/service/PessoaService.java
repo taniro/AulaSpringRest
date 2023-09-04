@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import ufrn.br.aulaspringrest.model.Pessoa;
 import ufrn.br.aulaspringrest.repository.PessoaRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +29,7 @@ public class PessoaService {
     }
 
     public Page<Pessoa> listAll(Pageable page){
+
         return repository.findAll(page);
     }
 
@@ -40,7 +42,8 @@ public class PessoaService {
         if(p.isPresent()){
             return p.get();
         }else{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found");
+            //throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found");
+            throw new EntityNotFoundException("Not found");
         }
     }
 
@@ -49,7 +52,8 @@ public class PessoaService {
         if (busca.isPresent()){
             return repository.save(p);
         }else{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found");
+            //throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found");
+            throw new EntityNotFoundException("Not found");
         }
     }
 

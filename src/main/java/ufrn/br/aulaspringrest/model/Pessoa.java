@@ -2,10 +2,17 @@ package ufrn.br.aulaspringrest.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
+import ufrn.br.aulaspringrest.dto.PessoaResponseDTO;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -15,16 +22,30 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@SQLDelete(sql = "UPDATE pessoas_tbl SET deleted_at = CURRENT_TIMESTAMP WHERE id=?")
+@Where(clause = "deleted_at is null")
+@Builder
 public class Pessoa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
+    @NotBlank (message = "O campo nome não pode estar em branco.")
     String nome;
     String sobrenome;
-    String idade;
+
+    @Min(value = 0, message = "A idade não deve ser menor que zero")
+    Integer idade;
     Boolean admin = false;
+
+
+    LocalDateTime deletedAt;
+
+    @UpdateTimestamp
+    LocalDateTime updatedAt;
+    @CreationTimestamp
+    LocalDateTime createdAt;
 
     /*
     @OneToOne(mappedBy = "pessoa")
