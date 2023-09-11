@@ -7,20 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Bean;
-import ufrn.br.aulaspringrest.model.Endereco;
-import ufrn.br.aulaspringrest.model.Pedido;
-import ufrn.br.aulaspringrest.model.Pessoa;
-import ufrn.br.aulaspringrest.model.Produto;
-import ufrn.br.aulaspringrest.repository.EnderecoRepository;
-import ufrn.br.aulaspringrest.repository.PedidoRepository;
-import ufrn.br.aulaspringrest.repository.PessoaRepository;
-import ufrn.br.aulaspringrest.repository.ProdutoRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import ufrn.br.aulaspringrest.config.RsaKeyProperties;
+import ufrn.br.aulaspringrest.model.*;
+import ufrn.br.aulaspringrest.repository.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @SpringBootApplication
+@EnableConfigurationProperties(RsaKeyProperties.class)
 public class AulaSpringRestApplication implements CommandLineRunner {
 
 
@@ -44,6 +43,25 @@ public class AulaSpringRestApplication implements CommandLineRunner {
 
     @Autowired
     ProdutoRepository produtoRepository;
+
+
+    @Bean
+    CommandLineRunner commandLineRunner(CredenciaisRepository repository, BCryptPasswordEncoder encoder){
+        return args -> {
+            Pessoa p = new Pessoa();
+            p.setSobrenome("Ortins");
+            p.setNome("Jose");
+
+            Credenciais c = new Credenciais();
+            c.setUsername("jose");
+            c.setPassword(encoder.encode("123"));
+            c.setRoles("user");
+
+            c.setPessoa(p);
+
+            repository.save(c);
+        };
+    }
 
     @Override
     @Transactional
