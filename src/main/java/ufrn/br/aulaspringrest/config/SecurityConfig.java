@@ -69,7 +69,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests( auth -> {
                     auth.requestMatchers(AUTH_WHITELIST).permitAll();
-                    auth.anyRequest().hasRole("admin");
+                    auth.anyRequest().authenticated();
                     })
                 .oauth2ResourceServer( oauth -> oauth.jwt(Customizer.withDefaults()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

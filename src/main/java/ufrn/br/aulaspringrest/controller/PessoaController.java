@@ -11,10 +11,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ufrn.br.aulaspringrest.dto.PessoaMapper;
 import ufrn.br.aulaspringrest.dto.PessoaRequestDTO;
 import ufrn.br.aulaspringrest.dto.PessoaResponseDTO;
+import ufrn.br.aulaspringrest.model.Endereco;
 import ufrn.br.aulaspringrest.model.Pessoa;
 import ufrn.br.aulaspringrest.service.PessoaService;
 
 import java.net.URI;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
 @RequestMapping("/api/pessoas/")
@@ -92,9 +95,25 @@ public class PessoaController {
     }*/
 
     @GetMapping("{id}")
-    public Pessoa getById(@PathVariable String id){
-        return service.getById(id);
+    public PessoaResponseDTO getById(@PathVariable String id){
+
+        Pessoa p = service.getById(id);
+
+
+        Endereco end = new Endereco();
+        end.setCidade("Natal");
+        end.setRua("UFRN");
+
+        p.setEndereco(end);
+
+        PessoaResponseDTO responseDTO = mapper.toPessoaResponseDTO(p);
+        responseDTO.addLinks(p.getEndereco());
+
+
+        return responseDTO;
     }
+
+
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
