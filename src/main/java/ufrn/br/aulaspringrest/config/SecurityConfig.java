@@ -44,7 +44,8 @@ public class SecurityConfig {
             "/api/public/authenticate",
             "/actuator/*",
             "/swagger-ui/**",
-            "/token"
+            "/token",
+            "/credenciais"
     };
 
     public SecurityConfig(RsaKeyProperties rsaKeys) {
@@ -68,7 +69,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests( auth -> {
                     auth.requestMatchers(AUTH_WHITELIST).permitAll();
-                    auth.anyRequest().authenticated();
+                    auth.anyRequest().hasRole("admin");
                     })
                 .oauth2ResourceServer( oauth -> oauth.jwt(Customizer.withDefaults()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

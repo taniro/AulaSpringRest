@@ -45,6 +45,7 @@ public class AulaSpringRestApplication implements CommandLineRunner {
     ProdutoRepository produtoRepository;
 
 
+    /*
     @Bean
     CommandLineRunner commandLineRunner(CredenciaisRepository repository, BCryptPasswordEncoder encoder){
         return args -> {
@@ -62,6 +63,8 @@ public class AulaSpringRestApplication implements CommandLineRunner {
             repository.save(c);
         };
     }
+
+     */
 
     @Override
     @Transactional
